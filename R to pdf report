@@ -1,0 +1,23 @@
+data<-read.table(".csv")
+
+for (i in 1:nrow(data)) {
+  cat(paste0("
+  \\textbf{Sample ID}: ", data$Sample_ID[i], "\\\\
+  \\textbf{Group}: ", data$Group[i], "\\\\
+  \\textbf{Sample characterization}: ", data$Sample_characterization[i], "\\\\
+  \\textbf{Rock inclusions}: ", data$Rock_inclusions[i], "\\\\
+  \\textbf{Mineral inclusions}: ", data$Mineral_inclusions[i], "\\\\
+  \\textbf{Aplastics vol.}: ", data$Aplastics_vol[i], " %\\\\
+  \\textbf{Aplastics shape}: ", data$Aplastics_shape[i], "\\\\
+  \\textbf{Aplastics sorting}: ", data$Aplastics_sorting[i], "\\\\
+  \\textbf{Aplastics spacing}: ", data$Aplastics_spacing[i], "\\\\
+  \\textbf{Aplastics grain size distribution}: ", data$Aplastics_grain_size_distribution[i], "\\\\
+  \\textbf{Microstructure}: ", data$Microstructure[i], "\\\\
+  \\textbf{Calcareous matrix}: ", data$Calcareous_matrix[i], "\\\\
+  \\textbf{Grog calcareous matrix}: ", data$Grog_calcareous_matrix[i], "
+  "))
+  
+  if (i < nrow(data)) {
+    cat("\n\\newpage\n")
+  }
+}
