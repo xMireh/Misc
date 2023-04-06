@@ -1,23 +1,59 @@
-data<-read.table(".csv")
-
-for (i in 1:nrow(data)) {
-  cat(paste0("
-  \\textbf{Sample ID}: ", data$Sample_ID[i], "\\\\
-  \\textbf{Group}: ", data$Group[i], "\\\\
-  \\textbf{Sample characterization}: ", data$Sample_characterization[i], "\\\\
-  \\textbf{Rock inclusions}: ", data$Rock_inclusions[i], "\\\\
-  \\textbf{Mineral inclusions}: ", data$Mineral_inclusions[i], "\\\\
-  \\textbf{Aplastics vol.}: ", data$Aplastics_vol[i], " %\\\\
-  \\textbf{Aplastics shape}: ", data$Aplastics_shape[i], "\\\\
-  \\textbf{Aplastics sorting}: ", data$Aplastics_sorting[i], "\\\\
-  \\textbf{Aplastics spacing}: ", data$Aplastics_spacing[i], "\\\\
-  \\textbf{Aplastics grain size distribution}: ", data$Aplastics_grain_size_distribution[i], "\\\\
-  \\textbf{Microstructure}: ", data$Microstructure[i], "\\\\
-  \\textbf{Calcareous matrix}: ", data$Calcareous_matrix[i], "\\\\
-  \\textbf{Grog calcareous matrix}: ", data$Grog_calcareous_matrix[i], "
-  "))
+setwd("j:/projekty/2023/Mayska Kovac/report/latex")
+create_latex <- function(x) {
+  l <- nrow(x)
+  cn <- colnames(x)
+  res <- vector("list", l)
   
-  if (i < nrow(data)) {
-    cat("\n\\newpage\n")
+  for (i in 1:l) {
+    res[i] <- paste0(
+      "\\begin{wrapfigure}{r}{0.5\\textwidth}  
+      \\begin{center}  
+      \\includegraphics[width=0.48\\textwidth]{Makrofoto/", unname(x[i, cn[14]]), "} 
+      \\end{center} 
+      \\end{wrapfigure}",
+      "\\textbf{Sample ID:} ", unname(x[i, cn[1]]), " \n \\newline \n \n",
+      "\\textbf{Group:} ", unname(x[i, cn[2]]), " \n \\newline \n \n",
+      "\\textbf{Surface decoration:} ", unname(x[i, cn[3]]), " \n \\newline \n \n",
+      "\\textbf{Sample characterisation:} ", unname(x[i, cn[3]]), " \n \\newline \n \n",
+      "\\textbf{Rock inclusions:} ", unname(x[i, cn[4]]), " \n \\newline \n \n",
+      "\\textbf{Mineral inclusions:} ", unname(x[i, cn[5]]), " \n \\newline \n \n",
+      "\\textbf{Aplastics vol.(\\%):} ", unname(x[i, cn[6]]), " \n \\newline \n \n",
+      "\\textbf{Aplastics shape:} ", unname(x[i, cn[7]]), " \n \\newline \n \n",
+      "\\textbf{Aplastics sorting:} ", unname(x[i, cn[8]]), " \n \\newline \n \n",
+      "\\textbf{Aplastics spacing:} ", unname(x[i, cn[9]]), " \n \\newline \n \n",
+      "\\textbf{Aplastics grain size distribution:} ", unname(x[i, cn[10]]), " \n \\newline \n \n",
+      "\\textbf{Microstructure:} ", unname(x[i, cn[11]]), " \n \\newline \n \n",
+      "\\textbf{Calcareous matrix:} ", unname(x[i, cn[12]]), " \n \\newline \n \n",
+      "\\textbf{Grog calcareous matrix:} ", unname(x[i, cn[13]]), " \n \\newline \n \n",
+      "\\begin{figure}[h] 
+      \\centering 
+      \\begin{subfigure}[b]{0.4\\textwidth} 
+      \\includegraphics[keepaspectratio, width=\\textwidth]{PPL/", unname(x[i, cn[15]]), "}  
+      \\end{subfigure} 
+      \\begin{subfigure}[b]{0.4\\textwidth}  
+      \\includegraphics[keepaspectratio, width=\\textwidth]{XPL/", unname(x[i, cn[16]]), "}  
+      \\end{subfigure} 
+      \\end{figure}"
+       )
   }
+  
+  out <- paste0(
+    "\\documentclass{article}\n
+    \\usepackage[T1]{fontenc}\n
+    \\usepackage{graphicx}\n 
+    \\usepackage[left=1.5cm,right=2cm,top=1.5cm,bottom=3cm]{geometry} \n
+    \\usepackage{subcaption} \n
+    \\usepackage{wrapfig} \n \n\\begin{document}\n",
+    paste0(unlist(res), collapse = "\\pagebreak"), 
+    "\n\n\\end{document}"
+  )
+  
+  writeLines(out, "latex.tex")
 }
+
+data <- read.table("./Petrography.csv", sep=";",header=TRUE)
+data<-cbind(data, Makrofoto = list.files("j:/projekty/2023/Mayska Kovac/report/latex/Makrofoto"))
+data<-cbind(data, PPL = list.files("j:/projekty/2023/Mayska Kovac/report/latex/PPL"))
+data<-cbind(data, XPL = list.files("j:/projekty/2023/Mayska Kovac/report/latex/XPL"))
+
+create_latex(data)
