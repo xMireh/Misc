@@ -1,4 +1,4 @@
-setwd("j:/projekty/2023/Mayska Kovac/report/latex")
+setwd()
 create_latex <- function(x) {
   l <- nrow(x)
   cn <- colnames(x)
@@ -52,8 +52,8 @@ create_latex <- function(x) {
 }
 
 data <- read.table("./Petrography.csv", sep=";",header=TRUE)
-data<-cbind(data, Makrofoto = list.files("j:/projekty/2023/Mayska Kovac/report/latex/Makrofoto"))
-data<-cbind(data, PPL = list.files("j:/projekty/2023/Mayska Kovac/report/latex/PPL"))
-data<-cbind(data, XPL = list.files("j:/projekty/2023/Mayska Kovac/report/latex/XPL"))
+data<-cbind(data, Makrofoto = list.files("/Makrofoto"))
+data<-cbind(data, PPL = list.files("/PPL"))
+data<-cbind(data, XPL = list.files("/XPL"))
 
 create_latex(data)
